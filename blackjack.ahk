@@ -5,22 +5,66 @@
 ; w::Click
 ; e::Mousemove,0,-56,0,R
 
+#IfWinActive, OSBuddy
 Esc::suspend
 ^Esc::pause
 ^r::reload
-
-z::knock()
-x::pickpocket()
-c::enchant_ruby()
+#IfWinActive, OSBuddy
++z::knock()
+#IfWinActive, OSBuddy
++x::pickpocket()
+#IfWinActive, OSBuddy
++c::enchant_ruby()
 ^v::alch()
+#IfWinActive, OSBuddy
 LAlt::quickalch()
+#IfWinActive, OSBuddy
 XButton1::flick_mage()
+#IfWinActive, OSBuddy
 XButton2::flick_range()
+#IfWinActive, OSBuddy
+space::flick_pray()
+#IfWinActive, OSBuddy
+^s::splash()
+
 
 global alch_x := 0, alch_y := 0, mage_tab_x := 0, mage_tab_y := 0, xpos1 := 0, xpos := 0, ypos := 0, ypos1 := 0
 global pray_tab_x, pray_tab_y, mage_x, mage_y, mage_att_x, mage_att_y := 0
 global range_x, range_y, range_att_x, range_att_y := 0
 global invent_tab_x, invent_tab_y := 0
+global minutespassed := 0
+
+splash() {
+
+while (minutespassed <= 360) {
+
+   Send, /Hey youtube, %minutespassed% mins of splashing
+   Send, {Enter} 
+   Sleep 60000
+   minutespassed++
+
+}
+
+}
+
+flick_pray() {
+
+   Click, %pray_tab_x%, %pray_tab_y%
+   Sleep 600
+
+   while not GetKeyState("space","P") {
+	Click, %pray_tab_x%, %pray_tab_y%
+	Random, sleepAmount, 1, 10
+ 	Sleep, sleepAmount
+	Click, %pray_tab_x%, %pray_tab_y%
+	new_sleep := 600 - sleepAmount
+	Sleep, new_sleep
+
+	}
+ Click, %pray_tab_x%, %pray_tab_y%
+ Sleep 1500
+
+}
 
 
 knock() {
@@ -198,5 +242,3 @@ return
 MouseGetPos, invent_tab_x, invent_tab_y 
 Msgbox, Inventory set X%invent_tab_x% Y%invent_tab_y%. 
 return
-
-
